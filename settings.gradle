@@ -1,3 +1,4 @@
 rootProject.name = 'spring-cloud-sample'
 
 include 'service-discovery'
+include 'aws-s3'
