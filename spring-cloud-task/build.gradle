@@ -34,3 +34,7 @@ dependencyManagement {
 test {
     useJUnitPlatform()
 }
+
+bootRun {
+    systemProperty 'spring.profiles.active', 'localhost'
+}
