@@ -1,0 +1,19 @@
+server:
+  port: 8080
+  shutdown: immediate
+spring:
+  application:
+    name: aws-s3
+  main:
+    web-application-type: servlet
+  servlet:
+    multipart:
+      max-request-size: 4GB
+      max-file-size: 3GB
+  mvc:
+    async:
+      request-timeout: 300s
+aws:
+  s3:
+    bucket: ${BUCKET}
+    region: ap-northeast-2

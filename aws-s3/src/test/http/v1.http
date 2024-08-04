@@ -1,0 +1,20 @@
+### 파일 업로드
+POST {{host}}/v1/files/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="test.txt"
+Content-Type: text/plain
+
+field-value
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="test2.txt"
+Content-Type: text/plain
+
+field-value2
+--WebAppBoundary--
+
+
+### 파일 다운로드
+GET {{host}}/v1/files/download/12
+Content-Type: application/json

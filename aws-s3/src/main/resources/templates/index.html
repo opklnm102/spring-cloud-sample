@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+Hello
+<a href="/hello">hello</a><br>
+<input type="file" id="fileInput" multiple/>
+<button onclick="uploadFiles('v1')">Upload Files(V1)</button>
+<button onclick="uploadFiles('v2')">Upload Files(V2)</button>
+<button onclick="uploadFiles('v3')">Upload Files(V3)</button>
+<button onclick="uploadFiles('v4')">Upload Files(V4)</button>
+
+<script>
+    function uploadFiles(version) {
+        const fileInput = document.getElementById('fileInput');
+        const formData = new FormData();
+
+        for (const file of fileInput.files) {
+            formData.append('files', file);
+        }
+
+        fetch(`http://localhost:8080/${version}/files/upload`, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                console.log(response);
+                if(!response.ok)  {
+                    throw new Error(`Failed to upload. ${response.status}`);
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log(data);
+                alert('upload successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to upload.');
+            });
+    }
+
+    function uploadPart() {
+        const chunkSize = 5 * 1024 * 1024;
+        let part_number = 1;
+        const fileInput = document.getElementById('fileInput');
+
+        const file = fileInput.files[0];
+
+
+        file.slice()
+
+
+    }
+</script>
+</body>
+</html>

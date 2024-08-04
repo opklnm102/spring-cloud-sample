@@ -1,0 +1,73 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "Client" as client
+participant "Application" as app
+participant "AWS S3" as s3
+
+==upload==
+activate client #FFBBBB
+client -> app: initiate multipart upload
+activate app
+note right: upload start
+app -> s3: initiate multipart upload
+activate s3
+s3 --> app : upload ID
+deactivate s3
+app --> client: upload ID
+deactivate app
+
+client -> client: split binary(create part)
+
+loop part count
+  client -> app: upload할 part의 URL 요청
+  activate app
+  app -> s3: create part upload presigned URL
+  s3 --> app: S3 PresignedURL
+  app -> client: S3 PresignedURL
+  client --> s3: upload part
+  activate s3
+  s3 --> client: eTag
+  note right: S3 multipart upload
+  deactivate s3
+end
+
+alt complete
+    client -> app: upload ID, [(part number, eTag), ...]
+    note right: upload complete
+    app -> s3: complete multipart upload
+    s3 --> app: OK
+    app --> client: OK
+else failure
+    client -> app: abort multipart upload
+    note right: abort multipart upload
+    app -> s3: abort multipart upload
+    s3 --> app: OK
+    app --> client: OK
+    deactivate app
+    deactivate client
+end
+
+
+'TODO: download sequence diagram 그리기
+autonumber
+==download==
+client -> app: download key
+activate client #FFAAFF
+activate app
+
+app -> s3: object key
+activate s3
+note right: S3 object download
+
+s3 --> app: stream data를 file로 저장
+app --> app: file -> Resource 변환
+deactivate s3
+
+app --> client: Resource
+deactivate app
+deactivate client
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant "Client" as client
+participant "Application" as app
+participant "AWS S3" as s3
+
+==upload==
+activate client #FFBBBB
+client -> app: 첨부 파일
+activate app
+
+app -> s3: stream data
+activate s3
+note right: S3 object upload
+
+s3 --> app: 저장 완료
+deactivate s3
+
+app --> client: 저장 완료
+deactivate app
+deactivate client
+
+
+autonumber
+==download==
+client -> app: download key
+activate client #FFAAFF
+activate app
+
+app -> s3: object key
+activate s3
+note right: S3 object download
+
+s3 --> app: stream data
+deactivate s3
+
+app --> client: StreamingResponseBody(stream data)
+deactivate app
+deactivate client
+
+@enduml
