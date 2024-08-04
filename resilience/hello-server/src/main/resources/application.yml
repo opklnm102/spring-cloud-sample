@@ -1,0 +1,6 @@
+server:
+  port: 8081
+  shutdown: immediate
+spring:
+  main:
+    web-application-type: servlet

@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  shutdown: immediate
+spring:
+  main:
+    web-application-type: servlet
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: on
+        alphanumeric-ids:
+          enabled: on
+
+resilience4j:
+  timelimiter:
+    instances:
+      HelloClienthello:
+        timeoutDuration: 3s
+      HelloClientheavyHello:
+        timeoutDuration: 1s
+      HelloClienterrorHello:
+        timeoutDuration: 1s
